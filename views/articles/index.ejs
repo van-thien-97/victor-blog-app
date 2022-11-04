@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>Blog</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <%- include('../shares/_nav.ejs') %> 
+
+    </div>
+
+    <% if (content?.user) { %>
+      <a class="btn btn-success" href="/articles/new">New Article</a>
+    <% } %>
+    <% for (let index = 0; index < content?.articles?.length; index+=2) {
+      const article = content?.articles[index]; 
+      const articlecol2 = content?.articles[index+1]; 
+      
+      %>
+      <div class="row ">
+      <% if (article) {%>
+        <div class="col-md-6 p-2">
+          <div class="mt-4">
+              <h4 class="card-title"><%= article.title %> </h4>
+            <img src="/public/images/<%= article.imagename || 'default' %>" class="rounded" width="500" alt="...">
+            <div class="body">
+              <div class="card-subtitle text-muted mb-2">
+                <%= article.createdAt %> 
+              </div>
+              <div class="card-text mb-2">
+                <%= article.description %> 
+              </div>
+              <a class="btn btn-secondary" href="articles/<%= article.slug %> ">Read more</a>
+              <% if (content?.user) {%>
+                <form class="d-inline" action="/articles/<%= article.id %>?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+              </form>  
+              <%}%>
+              
+            </div>
+            
+          </div>
+
+        </div>
+      <%}%>                
+      <%if (articlecol2) {%>
+        <div class="col-md-6 p-2">
+          <div class="mt-4">
+            <h4 class="card-title"><%= articlecol2?.title %> </h4>
+            <img src="/public/images/<%= articlecol2?.imagename || 'default' %>" class="rounded" width="500" alt="...">
+            <div class="body">
+              <div class="card-subtitle text-muted mb-2">
+                <%= articlecol2?.createdAt %> 
+              </div>
+              <div class="card-text mb-2">
+                <%= articlecol2?.description %> 
+              </div>
+              <a class="btn btn-secondary" href="articles/<%= articlecol2?.slug %> ">Read more</a>
+              <% if (content?.user) {%>
+                <form class="d-inline" action="/articles/<%= articlecol2?.id %>?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              <% }%>
+              
+            </div>
+            
+          </div>
+        </div>
+      <%}%>
+        
+      </div>
+        
+      
+    <% }; %>
+  </div>
+</body>
+
+</html>
